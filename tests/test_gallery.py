@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import locale
 import os
 import pytest
 import datetime
@@ -127,12 +126,6 @@ def test_video(settings, tmpdir):
 
 @pytest.mark.parametrize("path,album", REF.items())
 def test_album(path, album, settings, tmpdir):
-    # store current locale
-    old_locale = locale.setlocale(locale.LC_ALL)
-
-    # locale.setlocale(locale.LC_ALL, 'fr_FR')
-    locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
-
     gal = Gallery(settings, ncpu=1)
     a = Album(path, settings, album['subdirs'], album['medias'], gal)
 
@@ -142,9 +135,6 @@ def test_album(path, album, settings, tmpdir):
     assert a.thumbnail == album['thumbnail']
     assert [m.filename for m in a.medias] == album['medias']
     assert len(a) == len(album['medias'])
-
-    # restore locale back
-    locale.setlocale(locale.LC_ALL, old_locale)
 
 
 def test_album_medias(settings):
